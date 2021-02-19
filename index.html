@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link>
+    </link>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <!-- 引入swiper -->
+    <link rel="stylesheet" href="template/swiper/swiper.css">
+    <script src="template/swiper/swiper.js"></script>
+    <title>-------resume---------</title>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="link-box-wrap">
+            </div>
+            <a class="link-box" :href="github">
+                <i class="iconfont icon-github1"></i>
+            </a>
+            <!-- 简单介绍 -->
+            <div class="header-wrap">
+                <div class="header__info">
+                    <h1 class="header__name">Liszter</h1>
+                    <h2 class="header__intro">
+                        <p v-for="item of introList" :key="item.index">{{item}}</p>
+                    </h2>
+                    <ul class="header__social">
+                        <li>1111</li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <!-- project -->
+        <section class="project">
+            <!-- 简历 -->
+            <!-- <div class="resume">
+                个人简历
+            </div> -->
+            <!-- 个人技能  学习的领域 -->
+            <div class="skill">
+                <h1 class="skill-header">
+                    < skills>
+                </h1>
+                <div class="skill-box">
+                    <div class="skill-part1" ref="part1"></div>
+                    <div class="skill-part2" ref="part2">
+                        <template v-for="item of skillList" :key="item.index">
+                            <aside>
+                                <h3>
+                                    {{item.title}}
+                                </h3>
+                                <ul>
+                                    <template v-for="li of item.list" :key="li.index">
+                                        <li>{{li}}</li>
+                                    </template>
+                                </ul>
+                            </aside>
+                        </template>
+                    </div>
+                </div>
+
+            </div>
+            <!-- 放个轮播图 -->
+            <div class="pros">
+                <div class="pros-header">
+                    参与项目
+                </div>
+                <div class="swiper">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <template v-for="project in prosList" :key="project.index">
+                                <div class="swiper-slide">
+                                    <div class="swiper-box">
+
+                                    <h2>{{project.title}}</h2>
+
+                                    <div class="model-part">
+                                        <h3>该系统共有{{project.models.length}}个模块</h3>
+                                        <ul>
+                                            <template v-for="model in project.models" :key="model.index">
+                                                <li>
+                                                    <div class="flex-left">
+                                                        <div class="flex-label-120">
+                                                            {{Object.keys(model)[0]}}
+                                                        </div>
+                                                        <div class="flex-content">
+                                                            {{Object.values(model)[0]}}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                    <div class="skill-part">
+                                        <h3>该系统的实现方式：</h3>
+                                        <ul>
+                                            <template v-for="(skill, index) in project.skillList" :key="index">
+                                                <li>
+                                                    <div class="flex-left">
+                                                        <div class="flex-label-120">
+                                                            {{Object.keys(skill)[0]}}
+                                                        </div>
+                                                        <div class="flex-content">
+                                                            {{Object.values(skill)[0]}}
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+                                            </template>
+                                        </ul>
+
+                                    </div>
+                                    <div v-if="project.git !== ''" class="github-link">
+                                        <h3>该系统的git地址：</h3>
+                                        <div>
+                                            {{project.git}}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                </div>
+                            </template>
+                        </div>
+                        <!-- 如果需要分页器 -->
+                        <div class="swiper-pagination"></div>
+
+                        <!-- 如果需要导航按钮 -->
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- 联系 -->
+            <div class="contact">
+                <div class="contact__wrap">
+                    <h2>Contact me...</h2>
+                    <ul class="contact-list">
+                        <li v-for="(item, index) in contactList" :key="index">
+                            <a :href="item.url">
+                                <div class="single-card">
+                                    <div>
+                                        <i class="iconfont" :class="item.icon"></i>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <span class="contact-info" @mouseover="showDesc(index)"
+                                                @mouseout="hiddenDesc(index)">{{item.text}}</span>
+                                        </div>
+                                        <div v-if="item.img && item.default">
+                                            <img :src="item.img" alt="" srcset="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            github: 'https://github.com/Liszter',
+            introList: [
+                `I'm a proactive and creative front-end developer.I keep a close eye on front-end development and web standards.`,
+                '一天要做一件实事，一个月要做一件新事，一年要做一件大事，一辈子要做一件有意义的事。'
+            ],
+            //skillList
+            skillList: [{
+                    title: '前端',
+                    list: [
+                        '精通html、css、js',
+                        '熟练使用面向对象编程',
+                        '对js的设计模式有一定的研究'
+                    ]
+                },
+                {
+                    title: '前端项目框架',
+                    list: [
+                        '熟练使用vue2.0全家桶(vueRouter，vuex等)，且了解其实现的原理',
+                        '系统学习过react框架，但未曾在项目中实践',
+                        '系统学习了vue3.0, 但未曾在项目中实践'
+                    ]
+                },
+                {
+                    title: '前端UI框架',
+                    list: [
+                        '熟练使用ElememntUI',
+                        '熟练使用vant',
+                        '熟练使用mintUI'
+                    ]
+                },
+                {
+                    title: '大前端',
+                    list: [
+                        '系统学习过开发微信小程序（无开发经验，仅仅做了一个小商城）',
+                        '系统学习过开发uniapp多端程序（无开发经验，仅仅做了一个可以记录本人密码的app）',
+                        '了解过桌面开发程序（Electron）'
+                    ]
+                },
+                {
+                    title: '后端',
+                    list: [
+                        '了解微信的云开发',
+                        '了解java、php语法',
+                        '熟悉nodejs，且可搭建一个后台服务',
+                        '熟悉mysql，可以完成增删改查',
+                    ]
+                },
+            ],
+            prosList: [
+            {
+                title: '工信部-电信设备售后服务平台',
+                descript: [
+                    '该系统是工信部的一个web端项目。',
+                    '采用单点登录的形式，进入系统',
+                    '售后服务信息资源更准确，覆盖范围面更广，针对性强'
+                ],
+                // 系统主要分为5个模块
+                models: [
+                    {
+                        '单点登录': '网页跳转工信部统一登录界面进行登录，登陆完成再跳转回原页面'
+                    },
+                    {
+                        '网点查询': '查询服务的电信服务网点，配合百度地图api，另外可以对网点进行打分及评价'
+                    },
+                    {
+                        '常见问题': '主要是针对电信产品出现的问题的查询'
+                    },
+                    {
+                        '问题投诉': '客户在此模块中对使用的产品品牌进行投诉'
+                    },
+                    {
+                        '微信服务': '增添客服联系方式'
+                    },
+     
+                ],
+                // 项目技术使用
+                skillList: [{
+                        '框架': 'vue'
+                    },
+                    {
+                        '脚手架': 'vuecli 3.0'
+                    },
+                    {
+                        'UI框架': 'ElementUI'
+                    },
+                    {
+                        '页面路由': 'vue-router'
+                    },
+                    {
+                        '请求方式': 'axios'
+                    },
+                    {
+                        '状态管理器': 'vuex'
+                    }
+                ],
+                git: '',
+                url: 'https://jwxksh.miit.gov.cn/homePage',
+                // 附图
+                imgList: []
+            },
+              {
+                title: '费用报销系统',
+                descript: [
+                    '该系统是基于蓝信app开发的。',
+                    '系统主要是将公司内部的财务报销统一化管理，由线下的填申请单改为线上申请单，并且含有工作流审批流程，以减少重复工作等。'
+                ],
+                // 系统主要分为5个模块
+                models: [
+                    {
+                        '用户登录模块': '基于蓝信app的单点登录模块'
+                    },
+                    {
+                        '录入发票模块': '包括增值税发票、定额发票、出租车票、飞机票、火车票、船票等的识别及录入'
+                    },
+                    {
+                        '用户信息查看模块': '包括个人联系方式、公司角色、个人报销权限、个人项目管理等'
+                    },
+                    {
+                        '新增申请单模块': '包括差旅费申请单、手机费申请单、加班餐费申请单、行政办公申请单、体检费申请单及其他费用申请单等'
+                    },
+                    {
+                        '权限划分模块': '根据不同的角色，展示不同的功能。其中包括审批功能、申请单类型等'
+                    },
+                    {
+                        '审批申请单模块': '根据当前的角色来进行分配下一个审批的人员，当前角色有驳回（可以提交驳回意见）和同意两个功能'
+
+                    }
+                ],
+                // 项目技术使用
+                skillList: [{
+                        '框架': 'vue'
+                    },
+                    {
+                        '脚手架': 'vuecli 2.0'
+                    },
+                    {
+                        'UI框架': 'mintUI、vant'
+                    },
+                    {
+                        '页面路由': 'vue-router'
+                    },
+                    {
+                        '请求方式': 'axios'
+                    },
+                    {
+                        '状态管理器': 'vuex'
+                    }
+                ],
+                git: '',
+                // 附图
+                imgList: []
+            },
+            {
+                title: '系统管理子系统',
+                descript: [
+                    '该系统是基于蓝信客户端开发的。',
+                    '系统主要是整合报销系统的设置及其人员管理等功能'
+                ],
+                // 系统主要分为5个模块
+                models: [
+                    {
+                        '用户登录模块': '基于蓝信app的单点登录模块'
+                    },
+                    {
+                        '用户管理': '管理员查看或编辑-用户个人的信息/权限设置/角色管理等'
+                    },
+                    {
+                        '项目管理': '项目管理员角色维护部门当前的项目，及配置项目给员工或者是部门',
+                    },
+                    {
+                        '模板管理': '根据用户角色的不同配置不同的模板，以便于设置用户权限时可一键配置'
+                    },
+                    {
+                        '地区管理': '根据不同的地区划分不用的报销标准，另根据不同的角色属性设置不同的标准'
+                    },
+                    {
+                        '手机费报销配置': '手机费报销可以在该模块下设置报销的手机号码，以及申请不同的报销额度'
+                    },
+                    {
+                        '审批': '手机端的审批流程迁移到电脑端'
+                    },
+                    {
+                        '菜单管理': '维护菜单，设置菜单权限'
+                    }, {
+                        '工作流': '配置审批流程'
+                    }
+
+                ],
+                // 项目技术使用
+                skillList: [{
+                        '框架': 'vue'
+                    },
+                    {
+                        '脚手架': 'vuecli 3.0'
+                    },
+                    {
+                        'UI框架': 'ElementUI'
+                    },
+                    {
+                        '页面路由': 'vue-router'
+                    },
+                    {
+                        '请求方式': 'axios'
+                    },
+                    {
+                        '状态管理器': 'vuex'
+                    },
+                    {
+                        '工作流': 'activiti(vue项目中引入angular项目)'
+                    }
+                ],
+                git: '',
+                // 附图
+                imgList: []
+            }
+        ],
+            // 联系方式
+            contactList: [{
+                    icon: 'icon-QQ',
+                    text: '1105765999',
+                    default: false
+                }, {
+                    icon: 'icon-github1',
+                    text: 'github',
+                    url: 'https://github.com/Liszter',
+                    default: false
+                }, {
+                    icon: 'icon-csdn',
+                    text: 'csdn',
+                    url: 'https://blog.csdn.net/qq_39198394',
+                    default: false
+                },
+                {
+                    icon: 'icon-weixin',
+                    text: 'wechat',
+                    img: 'https://s3.ax1x.com/2021/02/14/yyB5Pf.png',
+                    default: false
+                }
+            ]
+        },
+        mounted() {
+            // 初始化swiper
+            this.initSwiper()
+            // 初始化个人技能
+            this.drawSkills()
+        },
+        methods: {
+            initSwiper() {
+                var mySwiper = new Swiper('.swiper-container', {
+                    direction: 'horizontal', // 垂直切换选项
+                    loop: true, // 循环模式选项
+
+                    // 如果需要前进后退按钮
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+
+                    // 如果需要滚动条
+                    scrollbar: {
+                        el: '.swiper-scrollbar',
+                    },
+                })
+            },
+            /**
+             * skill
+             **/
+            drawSkills() {
+                var myChart = echarts.init(this.$refs.part1);
+                // 指定图表的配置项和数据
+                var option = {
+                    dataset: {
+                        source: [
+                            ['score', 'amount', 'product'],
+                            [80, 80, 'html5'],
+                            [70, 70, 'css'],
+                            [70, 70, 'javascript'],
+                            [50, 50, 'jQuery'],
+                            [80, 80, 'Vue'],
+                            [40, 40, 'react'],
+                            [40, 40, 'uniapp'],
+                            [40, 40, '微信小程序'],
+                            [90, 90, 'ElementUI'],
+                            [80, 80, 'minitUI'],
+                            [90, 90, 'vant'],
+                            [50, 50, 'nodejs'],
+                            [50, 50, 'mysql']
+                        ]
+                    },
+                    grid: {
+                        containLabel: true
+                    },
+                    xAxis: {
+                        name: '掌握程度'
+                    },
+                    yAxis: {
+                        type: 'category'
+                    },
+                    visualMap: {
+                        orient: 'horizontal',
+                        left: 'center',
+                        min: 10,
+                        max: 100,
+                        text: ['精通', '了解'],
+                        // Map the score column to color
+                        dimension: 0,
+                        inRange: {
+                            color: ['#81ecec', '#e17055']
+                        }
+                    },
+                    series: [{
+                        type: 'bar',
+                        encode: {
+                            x: 'amount',
+                            y: 'product'
+                        }
+                    }]
+                };
+
+
+                myChart.setOption(option);
+            },
+            /***
+             * contact
+             **/
+            showDesc(index) {
+                this.contactList[index].default = true
+            },
+            hiddenDesc(index) {
+                this.contactList[index].default = false
+            },
+        }
+
+    })
+</script>
+
+</html>

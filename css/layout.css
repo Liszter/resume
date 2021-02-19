@@ -1,0 +1,15 @@
+
+.flex-left {
+    display: flex;
+    justify-content: left;
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+}
+.flex-label-80 {
+    width: 80px;
+}
+.flex-label-120 {
+    width: 120px;
+}
