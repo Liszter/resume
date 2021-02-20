@@ -39,7 +39,7 @@
                         <p v-for="item of introList" :key="item.index">{{item}}</p>
                     </h2>
                     <ul class="header__social">
-                        <li>1111</li>
+                        <li></li>
                     </ul>
                 </div>
             </div>
@@ -52,9 +52,10 @@
             </div> -->
             <!-- 个人技能  学习的领域 -->
             <div class="skill">
-                <h1 class="skill-header">
-                    < skills>
-                </h1>
+          
+                <div class="pros-header">
+                    个人技能
+                </div>
                 <div class="skill-box">
                     <div class="skill-part1" ref="part1"></div>
                     <div class="skill-part2" ref="part2">
@@ -77,16 +78,16 @@
             <!-- 放个轮播图 -->
             <div class="pros">
                 <div class="pros-header">
-                    参与项目
+                    参与公司的项目(当前共{{prosList.length}}个)
                 </div>
                 <div class="swiper">
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
-                            <template v-for="project in prosList" :key="project.index">
+                            <template v-for="(project, index) in prosList" :key="index">
                                 <div class="swiper-slide">
                                     <div class="swiper-box">
 
-                                    <h2>{{project.title}}</h2>
+                                    <h2>{{ (index+1) + '.' + project.title}}</h2>
 
                                     <div class="model-part">
                                         <h3>该系统共有{{project.models.length}}个模块</h3>
@@ -181,6 +182,13 @@
     new Vue({
         el: '#app',
         data: {
+            banben: [
+                {
+                    label: '初版',
+                    time: '2021年2月20日 14:48:56',
+                    descript: '初始化个人模板，当前仅支持pc端查看'
+                }
+            ],
             github: 'https://github.com/Liszter',
             introList: [
                 `I'm a proactive and creative front-end developer.I keep a close eye on front-end development and web standards.`,
@@ -231,6 +239,60 @@
             ],
             prosList: [
             {
+                title: '微信客服监控系统',
+                descript: [
+                    '该系统是所在部门的一个web端项目。',
+                    '系统主要用于检测监督客服的服务质量，统计客服的答复数量',
+                    '该系统也是为了方便客服增加智能客服功能，区域服务功能，以便于减少客服的重复工作'
+                ],
+                // 系统主要分为5个模块
+                models: [
+                    {
+                        '扫码登录': '微信扫码登录'
+                    },
+                    {
+                        '智能问答回复': '模仿微信提供的自主回复功能，可在后台系统自主配置问答关键词等'
+                    },
+                    {
+                        '区域问答回复': '主要是针对同一区域的相同问题的统一回复'
+                    },
+                    {
+                        '数据统计': '后台分析数据，前台主要是使用echarts进行统一展示'
+                    },
+                    {
+                        '自主服务': '展示统计的问题和答案'
+                    },
+     
+                ],
+                // 项目技术使用
+                skillList: [{
+                        '框架': 'vue'
+                    },
+                    {
+                        '脚手架': 'vuecli 2.0'
+                    },
+                    {
+                        'UI框架': 'ElementUI'
+                    },
+                    {
+                        '展示组件': 'echarts'
+                    },
+                    {
+                        '页面路由': 'vue-router'
+                    },
+                    {
+                        '请求方式': 'axios'
+                    },
+                    {
+                        '状态管理器': 'vuex'
+                    }
+                ],
+                git: '',
+                url: '',
+                // 附图
+                imgList: []
+            },
+            {
                 title: '工信部-电信设备售后服务平台',
                 descript: [
                     '该系统是工信部的一个web端项目。',
@@ -265,6 +327,9 @@
                     },
                     {
                         'UI框架': 'ElementUI'
+                    },
+                    {
+                        '地图': '百度地图api'
                     },
                     {
                         '页面路由': 'vue-router'
@@ -391,6 +456,64 @@
                     {
                         '工作流': 'activiti(vue项目中引入angular项目)'
                     }
+                ],
+                git: '',
+                // 附图
+                imgList: []
+            },
+            {
+                title: '合同管理子系统',
+                descript: [
+                    '该系统是基于蓝信客户端开发的。',
+                    '系统主要是用于公司销售人员申请和报销合同使用。'
+                ],
+                // 系统主要分为5个模块
+                models: [
+                    {
+                        '用户登录模块': '基于蓝信app的单点登录模块'
+                    },
+                    {
+                        '用户信息模块': '展示个人信息'
+                    },
+                    {
+                        '管理借款单位': '填写单据时需选择借款单位'
+                    },
+                    {
+                        '管理账户信息': '填写单据时需选择借款单模块'
+                    },
+                    {
+                        '报销单': '添加报销单模块'
+                    },
+                    {
+                        '借款单': '添加借款单模块'
+                    },
+                    {
+                        '借报联单': '添加借报联单模块'
+                    },
+                    {
+                        '审批': '领导审批功能'
+                    }
+                ],
+                // 项目技术使用
+                skillList: [{
+                        '框架': 'vue'
+                    },
+                    {
+                        '脚手架': 'vuecli 3.0'
+                    },
+                    {
+                        'UI框架': 'vant'
+                    },
+                    {
+                        '页面路由': 'vue-router'
+                    },
+                    {
+                        '请求方式': 'axios'
+                    },
+                    {
+                        '状态管理器': 'vuex'
+                    },
+              
                 ],
                 git: '',
                 // 附图

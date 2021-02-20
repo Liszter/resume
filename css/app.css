@@ -91,9 +91,9 @@ body {
 /* 技能 skill */
 .skill {
     position: relative;
-    background-color: #EEE;
+    background-color: #fab1a0;
     color: #333;
-    padding: 0 5vw;
+    padding: 0 20px;
     overflow: hidden;
 }
 .skill-header {
@@ -120,7 +120,7 @@ body {
 
 /* 项目 pros */
 .pros {
-    /* background-color: rgb(0, 177, 103); */
+    background-color: rgba(0, 177, 103, .3);
     /* color: #fff; */
     padding: 0 20px;
 }
@@ -135,7 +135,7 @@ body {
     width: 100%;
     height: 80vh;
     font-size: 0.8rem;
-    border: 1px solid #eee;
+    border: none;
 }
 .swiper-box {
     padding: 10px 40px;
